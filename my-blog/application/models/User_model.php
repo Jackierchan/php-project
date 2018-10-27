@@ -9,12 +9,13 @@
 class User_model extends CI_Model
 {
 
-    public function save($name,$password){
-        $data = array(
+    public function save($name,$pwd,$email,$sex){
+        $query = $this->db->insert('t_user', array(
             'name' => $name,
-            'password' => $password,
-        );
-        $query = $this->db->insert('t_user', $data);
+            'password' => $pwd,
+            'email'=>$email,
+            'sex'=>$sex
+        ));
         return $query;
     }
     public function get_user_by_email($email){

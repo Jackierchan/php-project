@@ -31,7 +31,7 @@
 </style>
 
 <div class="MainForm" id="reg_page">
-<form id="frm_reg" action="" method="POST" style="float:left; width:620px;">
+<form id="frm_reg" action="" method="POST" style="float:left; width:620px;" onsubmit="return false">
     <h2>申请<span style="color: #006600;"> SYSIT Blog</span> 账号，已经申请的请点击<a href="login.htm">这里</a>登录</h2>
     <div id="error_msg" class="error_msg" style="display:none"></div>
 	<table cellpadding="0" cellspacing="0">
@@ -43,7 +43,7 @@
 			</td>    			
     	</tr>
     	<tr>
-    		<th>姓名：</th>		
+    		<th >姓名：</th>
     		<td><input name="name" id="f_name" maxlength="20" class="TEXT" style="width: 150px;" type="text">
 				<span id="name_msg">不能超过10个字</span>
 			</td>
@@ -56,14 +56,17 @@
     	</tr>
     	<tr>
     		<th>密码确认：</th>		
-    		<td><input name="pwd2" id="f_pwd2" class="TEXT" style="width: 150px;" type="password"></td>
+    		<td><input name="pwd2" id="f_pwd2" class="TEXT" style="width: 150px;" type="password">
+                <span id="password1_msg"></span>
+
+            </td>
     	</tr>
     	<tr id="tr_gender">
         	<th>性别：</th>		
     		<td>
 				<input name="gender" value="1" id="gender_1" type="radio"><label for="gender_1">男</label>&nbsp;&nbsp;&nbsp;
 				<input name="gender" value="2" id="gender_2" type="radio"><label for="gender_2">女</label>
-				<span class="nodisp">请选择性别</span>
+				<span class="nodisp" id="sex_msg">请选择性别</span>
 			</td>	
         </tr>
     	<tr id="tr_area">
@@ -113,6 +116,7 @@
     		<th>验证码：</th>		
     		<td><input id="f_vcode" name="verifyCode" size="6" class="TEXT" type="text">
 			<span><a href="javascript:_rvi()">换另外一个图</a></span>
+                <span id="code_msg"></span>
 			</td>
     	</tr>
 		<tr>
@@ -125,7 +129,7 @@
     	<tr class="buttons">
     		<th>&nbsp;</th>		
 			<td style="padding: 20px 0pt;">
-    		<input value=" 注册新用户 " class="BUTTON SUBMIT" type="submit">
+    		<input value=" 注册新用户 " class="BUTTON SUBMIT" type="submit" id="logup">
 			</td>
     	</tr>
 	</tbody></table>
@@ -150,8 +154,6 @@
 </div>
 <script src="js/jquery-1.12.4.js"></script>
 <script>
-
-
 	$('#f_email').on('blur',function(){
 //		console.log($(this).val());
 		$.get('welcome/check_email',{
@@ -167,8 +169,65 @@
 
             }
 		},'text')
-
-
-	})
+	});
+    $('#logup').on('click',function () {
+        var name=$('#f_name').val();
+        var pwd=$('#f_pwd').val();
+        var pwd1=$('#f_pwd2').val();
+        var email=$('#f_email').val();
+        var flag=true;
+        if (email==''){
+            $('#email_tip').html('邮箱不能为空');
+            $('#email_tip').show();
+            flag=false;
+        }
+        if (name==''){
+            $('#name_msg').html('姓名不能为空');
+            flag=false;
+        }
+        if(pwd==''){
+            $('#password_msg').html('密码不能为空');
+            flag=false;
+        }
+        if (pwd1==''){
+            $('#password1_msg').html('确认密码不能为空');
+            flag=false;
+        }
+        if (pwd!=pwd1){
+            $('#password1_msg').html('密码不一致');
+            flag=false;
+        }
+        if (flag==true) {
+            var email = $('#f_email').val();
+            var sex = $('[name=gender]:checked').val();
+            var  code= $('#f_vcode').val();
+            $.get('welcome/save', {
+                name: name,
+                pwd: pwd,
+                email:email,
+                sex:sex,
+                code:code
+            }, function (data) {
+                console.log(data);
+                if (data=='success'){
+                    location.href = 'welcome/login';
+                }else if(data=='sex_error'){
+                    $('#sex_msg').html('请选择性别');
+                }else if(data=='pwd_error'){
+                    $('#password_msg').html('密码不能为空');
+                }else if(data=='email_error'){
+                    $('#email_tip').html('请输入邮箱');
+                }else if(data=='code_error'){
+                    $('#code_msg').html('请输入验证码');
+                }
+            }, 'text')
+        }
+    })
+    $('#f_name').on('focus',function () {
+        $('#name_msg').html('')
+    })
+    $('#f_pwd').on('focus',function () {
+        $('#password_msg').html('')
+    })
 </script>
 </body></html>

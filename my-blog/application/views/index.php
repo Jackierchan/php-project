@@ -34,7 +34,7 @@
 </div><!-- #EndLibraryItem --><div id="OSC_Topbar">
 	  <div id="VisitorInfo">
 		当前访客身份：
-				游客 [ <a href="login.htm">登录</a> | <a href="reg.htm">注册</a> ]
+				游客 [ <a href="login.htm">登录</a> | <a href="welcome/reg">注册</a> ]
 				<span id="OSC_Notification">
 			<a href="inbox.htm" class="msgbox" title="进入我的留言箱">你有<em>0</em>新留言</a>
 					</span>
