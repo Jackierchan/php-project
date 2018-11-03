@@ -110,20 +110,22 @@
 	<option value="海外">海外</option>
 </select>
 <select name="city" id="userCity"></select>
-<script src="images/getcity.js"></script><span class="nodisp">请选择您所在的地区</span></td>
+<span class="nodisp">请选择您所在的地区</span></td>
     	</tr>
     	<tr>
     		<th>验证码：</th>		
     		<td><input id="f_vcode" name="verifyCode" size="6" class="TEXT" type="text">
-			<span><a href="javascript:_rvi()">换另外一个图</a></span>
+
+			<span id="change_img"><a href="javascript:;">换另外一个图</a></span>
                 <span id="code_msg"></span>
 			</td>
     	</tr>
 		<tr>
     		<th>&nbsp;</th>		
-			<td>
-			<img id="img_vcode" alt="..." src="images/captcha.png" style="border: 2px solid rgb(204, 204, 204);" align="absmiddle">
-            <script language="javascript">function _rvi(){document.getElementById('img_vcode').src = '/action/user/captcha?t='+Math.random(1000);}</script>
+			<td id="img">
+			<?php
+            echo $captcha;
+            ?>
 			</td>
 		</tr>
     	<tr class="buttons">
@@ -218,7 +220,7 @@
                 }else if(data=='email_error'){
                     $('#email_tip').html('请输入邮箱');
                 }else if(data=='code_error'){
-                    $('#code_msg').html('请输入验证码');
+                    $('#code_msg').html('验证码错误');
                 }
             }, 'text')
         }
@@ -228,6 +230,11 @@
     })
     $('#f_pwd').on('focus',function () {
         $('#password_msg').html('')
+    })
+    $('#change_img').on('click',function () {
+        $.get('welcome/get_captcha',function (data) {
+            $('#img').html(data);
+        },'text')
     })
 </script>
 </body></html>
