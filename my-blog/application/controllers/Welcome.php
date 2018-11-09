@@ -105,14 +105,16 @@ class Welcome extends CI_Controller {
         }
         redirect('welcome/blog_list');
     }
-    public function blog_list(){
+    public function get_blog_list(){
         $id = $this->session->userdata('user')->id;
         $blog = $this->Blog_model->get_blog_list_by_id($id);
-
+        return $blog;
+    }
+    public function blog_list(){
+        $blog=$this->get_blog_list();
         $this->load->view('index_logined',array(
             'blogs'=>$blog
         ));
-
     }
     public function logout(){
         $this->session->unset_userdata('user');
@@ -120,9 +122,27 @@ class Welcome extends CI_Controller {
         redirect('welcome/login');
     }
     public function viewPost_comment($blog_id){
+        $my_blogs=$this->get_blog_list();
         $blog=$this->Blog_model->get_blog_by_id($blog_id);
+        $comments=$this->Blog_model->get_comment_by_blog_id($blog_id);
+        $prev=null;
+        $next=null;
+        foreach ($my_blogs as $index=>$my_blog){
+            if ($my_blog->blog_id == $blog->blog_id){
+                if($index>0){
+                    $prev=$my_blogs[$index-1];
+                }
+                if ($index<count($my_blogs)-1){
+                    $next=$my_blogs[$index+1];
+
+                }
+            }
+        }
         $this->load->view('viewPost_comment',array(
-                'blog'=>$blog
+                'blog'=>$blog,
+                'comment'=>$comments,
+                'prev'=>$prev,
+                'next'=>$next
         ));
 
     }

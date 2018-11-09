@@ -48,4 +48,11 @@ order by b.post_time desc";
         $query = $this->db->query($sql);
         return  $query->row();
     }
+    public function get_comment_by_blog_id($blog_id){
+        $this->db->select('*');
+        $this->db->from('t_comment c');
+        $this->db->join('t_user u','c.user_id=u.id');
+        $this->db->where('c.blog_id',$blog_id);
+        return $this->db->get()->result();
+    }
 }

@@ -234,6 +234,7 @@
     $('#change_img').on('click',function () {
         $.get('welcome/get_captcha',function (data) {
             $('#img').html(data);
+            console.log(data)
         },'text')
     })
 </script>

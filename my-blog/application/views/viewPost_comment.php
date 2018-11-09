@@ -1,5 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta http-equiv="Content-Language" content="zh-CN">
     <base href="<?php echo site_url();?>">
@@ -21,56 +22,48 @@
 <!--[if IE 9]>
 <style>ul.tabnav {padding: 3px 10px 4px 10px;}</style>
 <![endif]-->
-<div id="OSC_Screen"><!-- #BeginLibraryItem "/Library/OSC_Banner.lbi" -->
+<div id="OSC_Screen">
     <?php include "header.php"?>
-
-<div class="Blog">
-
-
-  <div class="BlogTitle">
-    <h1>测试文章3</h1>
-    <div class="BlogStat">
+    <div class="Blog">
+         <div class="BlogTitle">
+              <h1><?php echo $blog->blog_title?></h1>
+                <div class="BlogStat">
 						<span class="admin">
 			<a href="newBlog.htm">编辑</a>&nbsp;|&nbsp;<a href="javascript:delete_blog(24026)">删除</a>
-		</span>
-				发表于1小时前 , 
-		已有<strong>4</strong>次阅读  
-		共<strong><a href="#comments">2</a></strong>个评论
-		<strong>1</strong>人收藏此文章
+		                </span>
+				发表于<?php echo $blog->post_time;?> ,
+		        已有<strong><?php echo $blog->checked;?></strong>次阅读
+		        共<strong><a href="#comments"><?php echo $blog->num;?></a></strong>个评论
+		        <strong><?php echo $blog->cnum?></strong>人收藏此文章
 	</div> 
   </div>
-  <div class="BlogContent TextContent">测试文章3</div>
+  <div class="BlogContent TextContent"><?php echo $blog->blog_title?></div>
       <div class="BlogLinks">
 	<ul>
-          <li>上篇 <span>(1小时前)</span>：<a href="viewPost_logined.htm" class="prev">测试文章2</a></li>            	</ul>
+        <?php if (isset($prev)){?>
+        <li>上篇 <span><?php echo $prev->post_time;?></span>：<a href="welcome/viewPost_comment/<?php echo $prev->blog_id?>" class="prev"><?php echo $prev->blog_title;?></a>
+        </li>
+        <?php };?>
+        <?php if (isset($next)) {?>
+        <li>下篇 <span><?php echo $next->post_time;?></span>：<a href="welcome/viewPost_comment/<?php echo $next->blog_id?>" class="prev"><?php echo $next->blog_title;?></a>
+        </li>
+        <?php };?>
+    </ul>
   </div>
     <div class="BlogComments">
-    <h2><a name="comments" href="#postform" class="opts">发表评论»</a>共有 2 条网友评论</h2>
-			<ul id="BlogComments">
-	<li id='cmt_24027_154693_261665734'>
-
-	<div class='portrait'>
-
-		<a href="#"><img src="images//portrait.gif" align="absmiddle" alt="sw0411" title="sw0411" class="SmallPortrait" user="154693"/></a>
-
-	</div>
-
-	<div class='body'>
-
-		<div class='title'>
-
-			sw0411 发表于 2011-06-18 00:37</div>
-
-		<div class='post'>hoho</div>
-
-		<div id='inline_reply_of_24027_154693_261665734' class='inline_reply'></div>
-
+    <h2><a name="comments" href="#postform" class="opts">发表评论»</a>共有 <?php echo $blog->num;?> 条网友评论</h2>
+		<ul id="BlogComments">
+                <?php foreach ($comment as $comment) {?>
+	        <li>
+	            <div class='body'>
+                    <div class='title'>
+                <?php echo $comment->name;?> 发表于 <?php echo $comment->post_time;?></div>
+		        <div class='post'><?php echo $comment->content;?></div>
+                </div>
+            </li>
+                <?php }?>
+        </ul>
     </div>
-
-	<div class='clear'></div>
-
-</li>	</ul>
-		  </div>  
   <div class="CommentForm">
     <a name="postform"></a>
     <form id="form_comment" action="/action/blog/add_comment?blog=24026" method="POST">          
@@ -104,7 +97,6 @@
     </form>
 </div>
 </div>
-<script type="text/javascript" src="js/blog.htm" defer="defer"></script>
 <script type="text/javascript" src="js/brush.js"></script>
 <link type="text/css" rel="stylesheet" href="css/shCore.css">
 <link type="text/css" rel="stylesheet" href="css/shThemeDefault.css">
@@ -122,4 +114,5 @@ ajax_post("/action/blog/delete?id="+blog_id,"",function(html){
 	<div class="clear"></div>
 	<div id="OSC_Footer">© 赛斯特(WWW.SYSIT.ORG)</div>
 </div>
-</body></html>
+</body>
+</html>
