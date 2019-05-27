@@ -55,7 +55,8 @@
 		<div>
 			<a href="#">TA的博客列表</a>&nbsp;|
 			<a href="sendMsg.htm">发送留言</a>
-</span>
+
+            </span>
 		</div>
 	</div>
 	<div class="clear"></div>
